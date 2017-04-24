@@ -44,7 +44,7 @@ public class Servlet extends HttpServlet {
                 rs.next();
                 int weeks = rs.getInt(1);
                 request.setAttribute("weeks", weeks);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("newjsp.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -104,7 +104,10 @@ public class Servlet extends HttpServlet {
             proc.getMoreResults();
             rs = proc.getResultSet();
             while (rs.next()) {
-                sb.append("<tr data-id_user='").append(rs.getInt("id")).append("'><td>").append(rs.getString("FIO")).append("</td>");
+                sb.append("<tr data-id_user='").append(rs.getInt("id")).append("'>"
+                        + "<td>").append(rs.getInt("nomer")).append("</td>")
+                        .append("<td>").append(rs.getString("FIO")).append("</td>")
+                        .append("<td>").append(rs.getString("type_name")).append("</td>");
                 int i = 1;
                 int prop = 0;
                 int uv_prop = 0;

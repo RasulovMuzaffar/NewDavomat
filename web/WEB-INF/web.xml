@@ -8,4 +8,16 @@
     <welcome-file-list>
         <welcome-file>servlet</welcome-file>
     </welcome-file-list>
+    <filter>
+        <filter-name>FilterCharset</filter-name>
+        <filter-class>inst.utils.FilterCharset</filter-class>
+        <init-param>
+            <param-name>codepage</param-name>
+            <param-value>UTF8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>FilterCharset</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

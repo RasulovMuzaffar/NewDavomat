@@ -1,0 +1,242 @@
+/* Базовые стили демо-страницы */
+
+/**,*/
+/**:before,*/
+/**:after {*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*box-sizing: border-box;*/
+/*}*/
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font: 14px/1 "Open Sans", sans-serif;
+    color: #555;
+    background: #fafafa;
+}
+
+body {
+    background-color: #e5e6e6;
+}
+
+.header {
+    height: 50px;
+    width: 100%;
+    border-bottom: 1px groove #eeeeee;
+}
+
+.h-left-panel {
+    width: 50%;
+    float: left;
+}
+
+.h-left-panel h1 {
+    margin-top: 0;
+    margin-left: 5px;
+    color: #4d6768;
+}
+
+.h-right-panel {
+    width: 50%;
+    float: right;
+    text-align: right;
+}
+
+.logout {
+    margin-top: 3px;
+}
+
+.logout a {
+    color: red;
+    text-decoration: none;
+}
+
+.info h3 {
+    margin-top: 0px;
+    color: #678889;
+}
+
+.container-fluid h3{
+    margin-top: 0px;
+}
+.current_date{
+    float: right;
+    color: #4d6768;
+    margin-bottom: 0;
+    text-align: right;
+}
+.container {
+    min-width: 800px;
+    max-width: 100%;
+    /*margin: 0 auto;*/
+    padding: 25px 10px 0;
+}
+
+/*h1 {*/
+    /*padding: 50px 0;*/
+    /*font-weight: 400;*/
+    /*text-align: center;*/
+/*}*/
+
+/*.info {*/
+    /*color: rgba(78, 78, 78, 0.8);*/
+    /*width: 100%;*/
+    /*margin: 40px auto;*/
+    /*text-align: center;*/
+    /*font-weight: 300;*/
+/*}*/
+
+/*.info a {*/
+    /*color: #bbb;*/
+    /*text-decoration: none;*/
+/*}*/
+
+/*.info a:hover {*/
+    /*color: #888;*/
+/*}*/
+/* Конец стилей демо-страницы */
+/* Базовый контейнер табов */
+
+.tabs {
+    min-width: 800px;
+    max-width: 100%;
+    padding: 0px;
+    margin: 0 auto;
+    /*position: absolute;*/
+}
+/* Стили секций с содержанием */
+
+.tabs > section {
+    display: none;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.tabs > section > p {
+    margin: 0 0 5px;
+    line-height: 1.5;
+    color: #383838;
+    /* прикрутим анимацию */
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+/* Описываем анимацию свойства opacity */
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Прячем чекбоксы */
+
+.tabs > input {
+    display: none;
+    position: absolute;
+}
+/* Стили переключателей вкладок (табов) */
+
+.tabs > label {
+    display: inline-block;
+    margin: 0 0 -1px;
+    padding: 15px 25px;
+    font-weight: 600;
+    text-align: center;
+    color: #aaa;
+    border: 0px solid #ddd;
+    border-width: 1px 1px 1px 1px;
+    background: #f1f1f1;
+    border-radius: 3px 3px 0 0;
+}
+/* Шрифт-иконки от Font Awesome в формате Unicode */
+
+/*.tabs > label:before {*/
+/*font-family: fontawesome;*/
+/*font-weight: normal;*/
+/*margin-right: 10px;*/
+/*}*/
+
+/*.tabs > label[for*="1"]:before {*/
+/*content: "\f19a";*/
+/*}*/
+
+/*.tabs > label[for*="2"]:before {*/
+/*content: "\f17a";*/
+/*}*/
+
+/*.tabs > label[for*="3"]:before {*/
+/*content: "\f13b";*/
+/*}*/
+
+/*.tabs > label[for*="4"]:before {*/
+/*content: "\f13c";*/
+/*}*/
+/* Изменения стиля переключателей вкладок при наведении */
+
+.tabs > label:hover {
+    color: #888;
+    cursor: pointer;
+}
+/* Стили для активной вкладки */
+
+.tabs > input:checked + label {
+    color: #555;
+    border-top: 1px solid #009933;
+    border-bottom: 1px solid #fff;
+    background: #fff;
+}
+/* Активация секций с помощью псевдокласса :checked */
+
+#tab1:checked ~ #content-tab1,
+#tab2:checked ~ #content-tab2,
+#tab3:checked ~ #content-tab3,
+#tab4:checked ~ #content-tab4 {
+    display: block;
+}
+section{
+    max-height: 500px;
+    overflow-y: auto;
+}
+/* Убираем текст с переключателей
+* и оставляем иконки на малых экранах
+*/
+
+@media screen and (max-width: 680px) {
+    .tabs > label {
+        font-size: 0;
+    }
+    .tabs > label:before {
+        margin: 0;
+        font-size: 18px;
+    }
+}
+/* Изменяем внутренние отступы
+*  переключателей для малых экранов
+*/
+
+@media screen and (max-width: 400px) {
+    .tabs > label {
+        padding: 15px;
+    }
+}
