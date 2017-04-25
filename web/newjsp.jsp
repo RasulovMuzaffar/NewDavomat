@@ -31,7 +31,7 @@
         </div>
 
         <div class="container-fluid">
-            <div class="current_date"><b>2016-2017 o'quv yili</b><br/><br/><b>2-semestr</b></div>
+            <div class="current_date"><strong>${uch_god} o'quv yili<br/><br/>${uch_semstr}-semestr</strong></div>
             <div class="tabs">
                 <input id="tab1" type="radio" name="tabs" checked>
                 <label for="tab1" title="I-kurs">I-kurs</label>
@@ -43,18 +43,15 @@
                 <label for="tab4" title="IV-kurs">IV-kurs</label>
                 <section id="content-tab1">
                     <ul class="nav nav-justified">
-                        <li class="active">
-                            <a href="#" onclick="www1('getBody', 1, 1);">IQ-178</a>
-                        </li>
-                        <li><a href="#">IQ-179</a></li>
-                        <li><a href="#">MN-52</a></li>
-                        <li><a href="#">MN-53</a></li>
-                        <li><a href="#">MN-54</a></li>
-                        <li><a href="#">BHA-36</a></li>
-                        <li><a href="#">BHA-37</a></li>
-                        <li><a href="#">AT-27</a></li>
-                        <li><a href="#">AT-28</a></li>
+                        <c:forEach items="${groups}" var="g">
+                            <li>
+                                <a href="#" onclick="www1('getBody', ${g.id}, ${uch_semstr});">${g.name}</a>
+                            </li>
+                        </c:forEach>
                     </ul>
+
+
+
                     <br/>
                     <table class="table table-bordered">
                         <thead>
@@ -69,93 +66,21 @@
                                 <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>&sum;</b></th>
                             </tr>
                             <tr>
-                        <c:forEach var="i" begin="1" end="${weeks}">
-                            <th colspan="2" class="text-center"><c:out value="${i}"/></th>
-                        </c:forEach>
-                        <!--                            <th colspan="2" class="text-center">1</th>
-                                                    <th colspan="2" class="text-center">2</th>
-                                                    <th colspan="2" class="text-center">3</th>
-                                                    <th colspan="2" class="text-center">4</th>
-                                                    <th colspan="2" class="text-center">5</th>
-                                                    <th colspan="2" class="text-center">6</th>
-                                                    <th colspan="2" class="text-center">7</th>
-                                                    <th colspan="2" class="text-center">8</th>
-                                                    <th colspan="2" class="text-center">9</th>
-                                                    <th colspan="2" class="text-center">10</th>
-                                                    <th colspan="2" class="text-center">11</th>
-                                                    <th colspan="2" class="text-center">12</th>
-                                                    <th colspan="2" class="text-center">13</th>
-                                                    <th colspan="2" class="text-center">14</th>
-                                                    <th colspan="2" class="text-center">15</th>
-                                                    <th colspan="2" class="text-center">16</th>
-                                                    <th colspan="2" class="text-center">17</th>
-                                                    <th colspan="2" class="text-center">18</th>-->
-                        </tr>
-                        <tr>
-                        <c:forEach begin="1" end="${weeks}">
-                            <th colspan="2" class="text-center">06.03 11.03</th>
-                        </c:forEach>
-                        <!--                            <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>
-                                                    <th colspan="2" class="text-center">06.03 11.03</th>-->
-                        </tr>
-                        <tr>
-                        <c:forEach begin="1" end="${weeks}">
-                            <th class="text-center">U</th>
-                            <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                        </c:forEach>
-                        <!--                        <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
-                                                <th class="text-center">U</th>
-                                                <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>-->
-                        </tr>
+                                <c:forEach var="i" begin="1" end="${weeks}">
+                                    <th colspan="2" class="text-center"><c:out value="${i}"/></th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach begin="1" end="${weeks}">
+                                    <th colspan="2" class="text-center">06.03 11.03</th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach begin="1" end="${weeks}">
+                                    <th class="text-center">U</th>
+                                    <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
+                                    </c:forEach>
+                            </tr>
                         </thead>
                         <tbody id="tbody1">
                         </tbody>
@@ -179,13 +104,27 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="resources/js/bootstrap.min.js"></script>
 
+        <!--///скрипт для перехода по группам///-->
         <script>
-                                function www1(p, id, semestr) {
-                                    $.post('servlet', {command: p, id: id, semestr: semestr}, function (data) {
-                                        console.log(data);
-                                        document.getElementById("tbody1").innerHTML = data;
+                                $(function () {
+                                    $('ul.nav.nav-justified li a').click(function () {
+                                        // удаляем класс .active у всех кнопок
+                                        $('ul.nav.nav-justified li').each(function () {
+                                            $(this).removeClass('active');
+                                        });
+                                        //добавляем для нажатой
+                                        $(this).parent().addClass('active');
                                     });
-                                }
+                                });
+        </script>
+        <!--///////-->
+        <script>
+            function www1(p, id, semestr) {
+                $.post('servlet', {command: p, id: id, semestr: semestr}, function (data) {
+                    console.log(data);
+                    document.getElementById("tbody1").innerHTML = data;
+                });
+            }
         </script>
 
     </body>
