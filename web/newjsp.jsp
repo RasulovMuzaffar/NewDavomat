@@ -35,18 +35,18 @@
             <div class="current_date"><strong>${uch_god} o'quv yili<br/><br/>${uch_semstr}-semestr</strong></div>
             <div class="tabs">
                 <input id="tab1" type="radio" name="tabs" checked>
-                <label for="tab1" title="I-kurs" onclick="getCources('getGr',1, ${uch_semstr});">I-kurs</label>
+                <label for="tab1" title="I-kurs" onclick="getCources('getGr', 1, ${uch_semstr});">I-kurs</label>
                 <input id="tab2" type="radio" name="tabs">
-                <label for="tab2" title="II-kurs" onclick="getCources('getGr',2, ${uch_semstr});">II-kurs</label>
+                <label for="tab2" title="II-kurs" onclick="getCources('getGr', 2, ${uch_semstr});">II-kurs</label>
                 <input id="tab3" type="radio" name="tabs">
-                <label for="tab3" title="III-kurs" onclick="getCources('getGr',3, ${uch_semstr});">III-kurs</label>
+                <label for="tab3" title="III-kurs" onclick="getCources('getGr', 3, ${uch_semstr});">III-kurs</label>
                 <input id="tab4" type="radio" name="tabs">
-                <label for="tab4" title="IV-kurs" onclick="getCources('getGr',4, ${uch_semstr});">IV-kurs</label>
+                <label for="tab4" title="IV-kurs" onclick="getCources('getGr', 4, ${uch_semstr});">IV-kurs</label>
                 <section id="content-tab1" >
                     <ul class="nav nav-justified grps">
                         <c:forEach items="${groups}" var="g">
                             <li>
-                                <a href="#" onclick="getGroups('getBody', ${g.id}, ${uch_semstr});">${g.name}</a>
+                                <a href="#" onclick="getGroups('getBody', ${g.id}, ${uch_semstr}, ${kursN});">${g.name}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -87,8 +87,41 @@
                     </table>
                 </section>
                 <section id="content-tab2">
-                    <p> 2 kurs</p>
                     <ul class="nav nav-justified grps"></ul>
+                    <br/>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th rowspan="4" class="text-center">#</th>
+                                <th rowspan="4" class="text-center">Familiyasi, Ismi, Sharifi</th>
+                                <!--<th rowspan="4" class="text-center">Guruh</th>-->
+                                <th rowspan="4" class="text-center">G/K</th>
+                                <th colspan="${weeks*2}" class="text-center">Semestr davomidagi xaftalar</th>
+                                <th rowspan="4" class="text-center" style="font-size: 14pt"><b>&sum;</b></th>
+                                <th rowspan="4" class="text-center" style="background-color: #00dc00; font-size: 14pt"><b>&sum;</b></th>
+                                <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>&sum;</b></th>
+                            </tr>
+                            <tr>
+                                <c:forEach var="i" begin="1" end="${weeks}">
+                                    <th colspan="2" class="text-center"><c:out value="${i}"/></th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="${d}" var="d">
+                                    <!--<th colspan="2" class="text-center">06.03 11.03</th>-->
+                                    <th colspan="2" class="text-center">${d}</th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach begin="1" end="${weeks}">
+                                    <th class="text-center">U</th>
+                                    <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
+                                    </c:forEach>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody2">
+                        </tbody>
+                    </table>
                 </section>
                 <section id="content-tab3">
                     <p>3 kurs</p>
@@ -107,30 +140,44 @@
 
         <!--///скрипт для перехода по группам///-->
         <script>
-            $(function () {
-                $('ul.nav.nav-justified li a').click(function () {
-                    // удаляем класс .active у всех кнопок
-                    $('ul.nav.nav-justified li').each(function () {
-                        $(this).removeClass('active');
-                    });
-                    //добавляем для нажатой
-                    $(this).parent().addClass('active');
-                });
-            });
+                                    $(function () {
+                                        $('ul.nav.nav-justified li a').click(function () {
+                                            // удаляем класс .active у всех кнопок
+                                            $('ul.nav.nav-justified li').each(function () {
+                                                $(this).removeClass('active');
+                                            });
+                                            //добавляем для нажатой
+                                            $(this).parent().addClass('active');
+                                        });
+                                    });
         </script>
         <!--///////-->
         <script>
-            function getGroups(p, id, semestr) {
+            function getGroups(p, id, semestr, kursN) {
                 $.post('servlet', {command: p, id: id, semestr: semestr}, function (data) {
                     console.log(data);
-                    document.getElementById("tbody1").innerHTML = data;
+                    switch (kursN) {
+                        case 1:
+                            document.getElementById("tbody1").innerHTML = data;
+                            break;
+                        case 2:
+                            document.getElementById("tbody2").innerHTML = data;
+                            break;
+                        case 3:
+                            document.getElementById("tbody3").innerHTML = data;
+                            break;
+                        case 4:
+                            document.getElementById("tbody4").innerHTML = data;
+                            break;
+                    }
                 });
             }
-            
+
             function getCources(p, kurs, sem) {
-                $.post('servlet', {command: p, kurs: kurs, semestr:sem}, function (data) {
+                $.post('servlet', {command: p, kurs: kurs, semestr: sem}, function (data) {
                     console.log("---- " + data);
 //                    document.getElementsByClassName("grps").innerHTML = data;
+                    $('.grps').empty();
                     $('.grps').append(data);
                 });
             }

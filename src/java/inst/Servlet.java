@@ -39,8 +39,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -73,12 +73,16 @@ public class Servlet extends HttpServlet {
                 ResultSet rs = proc.executeQuery();
                 rs.next();
                 int weeks = rs.getInt("weeksOnSem");
-                Date startNed = rs.getDate("semesters");
                 request.setAttribute("weeks", weeks);
-
+                
+                int kursN = rs.getInt("kurs");
+                request.setAttribute("kursN", kursN);
+                
+                Date startNed = rs.getDate("semesters");
                 request.setAttribute("d", getDaysOfWeeks(startNed, weeks));
 
                 request.setAttribute("startNed", startNed);
+                
                 request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
 
                 request.getRequestDispatcher("newjsp.jsp").forward(request, response);
@@ -225,7 +229,8 @@ public class Servlet extends HttpServlet {
         StringBuilder sb = new StringBuilder();
         List<SprGroup> list = getGroups(cource, semestr);
         for (SprGroup sprGroup : list) {
-            sb.append("<li><a href='#' onclick='getGroups('getBody'," + sprGroup.getId() + ", " + semestr + ");'>" + sprGroup.getName() + "</a></li>");
+            sb.append("<li><a href='#' onclick=getGroups('getBody'," + sprGroup.getId() + "," + semestr + "," + cource + ");>" + sprGroup.getName() + "</a></li>"
+            );
         }
         return sb.toString();
     }
