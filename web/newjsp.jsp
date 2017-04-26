@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%-- 
     Document   : newjsp
     Created on : 24.04.2017, 16:16:15
@@ -5,10 +6,10 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Талабалар давомати</title>
@@ -27,7 +28,8 @@
     </head>
     <body>
         <div class="container-fluid">
-            <h3>Talabalar davomati</h3>
+            <h3>Талабалар давомати</h3>
+            <a href="newjsp1.jsp">goto ->>></a>
         </div>
 
         <div class="container-fluid">

@@ -16,11 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -40,8 +37,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,6 +46,7 @@ public class Servlet extends HttpServlet {
 
         try {
             response.setContentType(CONTENT_TYPE);
+response.setCharacterEncoding("cp1251");
             PrintWriter out = response.getWriter();
 
             Calendar c = new GregorianCalendar();
