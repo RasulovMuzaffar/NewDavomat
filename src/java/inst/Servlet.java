@@ -14,8 +14,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,8 +39,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,8 +48,9 @@ public class Servlet extends HttpServlet {
 
         try {
             response.setContentType(CONTENT_TYPE);
-response.setCharacterEncoding("cp1251");
-            PrintWriter out = response.getWriter();
+//            response.setCharacterEncoding("utf-8");
+//            PrintWriter out = response.getWriter();
+//            out.print("вроде работает!");
 
             Calendar c = new GregorianCalendar();
             if (c.get(Calendar.MONTH) < 8) {
@@ -69,13 +72,17 @@ response.setCharacterEncoding("cp1251");
                     CallableStatement proc = con.prepareCall("{call procedure1(" + 1 + "," + Integer.parseInt(uch_semstr) + ")}");) {
                 ResultSet rs = proc.executeQuery();
                 rs.next();
-                int weeks = rs.getInt(1);
-//                Date startNed = rs.getDate(2);
-//                System.out.println("startNed ====>>> " + rs.getDate(1));
+                int weeks = rs.getInt("weeksOnSem");
+                Date startNed = rs.getDate("semesters");
                 request.setAttribute("weeks", weeks);
-                request.setAttribute("groups", getGroups(1));
+
+                request.setAttribute("d", getDaysOfWeeks(startNed, weeks));
+
+                request.setAttribute("startNed", startNed);
+                request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
 
                 request.getRequestDispatcher("newjsp.jsp").forward(request, response);
+//                response.sendRedirect("newjsp1.jsp");
             } catch (SQLException ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -92,30 +99,33 @@ response.setCharacterEncoding("cp1251");
         String command;
         int id = 0;
         int semestr = 0;
+        int cource = 0;
         command = request.getParameter("command");
 
         switch (command) {
-            case "getSum":
-//                out.print(getSum(id, name));
-                out.print("<tr><td>" + id + "</td><td>" + semestr + "</td></tr>");
-                break;
-            case "getMin":
-                System.out.println("Метод getMin!!!");
-                out.print("<tr><td>" + semestr + "</td><td>" + id + "</td></tr>");
-                break;
             case "getBody": {
                 id = Integer.parseInt(request.getParameter("id"));
                 semestr = Integer.parseInt(request.getParameter("semestr"));
                 try {
                     out.print(getBody(id, semestr));
                 } catch (ClassNotFoundException ex) {
-//                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
                     System.out.println("ClassNotFoundException ex ==> " + ex);
                 }
             }
+            case "getGr":
+                cource = Integer.parseInt(request.getParameter("kurs"));
+                semestr = Integer.parseInt(request.getParameter("semestr"));
+
+                try {
+                    out.print(getGr(cource, semestr));
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
         }
 
-        System.out.println("id = " + id + " ; semestr = " + semestr);
+//        System.out.println("id = " + id + " ; semestr = " + semestr);
     }
 
     private String getSum(int id, String name) {
@@ -167,19 +177,22 @@ response.setCharacterEncoding("cp1251");
                 uv_prop = 0;
                 sb.append("</tr>");
             }
-            System.out.println("sb ---> " + sb);
+//            System.out.println("sb ---> " + sb);
         } catch (SQLException ex) {
             System.out.println("SQLException --->>> " + ex);
         }
         return sb.toString();
     }
 
-    private List getGroups(int i) throws ClassNotFoundException {
+    private List getGroups(int kurs, int sem) throws ClassNotFoundException {
         String sql = "select id, name, id_faculty from spr_group";
+        String sql2 = "SELECT spr_group.id, spr_group.name, spr_group.id_faculty FROM grafik INNER JOIN spr_group ON grafik.id_group = spr_group.id WHERE grafik.kurs = " + kurs
+                + " AND semester=" + sem;
+
         List<SprGroup> list = new ArrayList();
         Class.forName("com.mysql.jdbc.Driver");
         try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
-                PreparedStatement ps = con.prepareStatement(sql);) {
+                PreparedStatement ps = con.prepareStatement(sql2);) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 SprGroup s = new SprGroup(rs.getInt(1), rs.getString(2), rs.getInt(3));
@@ -190,4 +203,31 @@ response.setCharacterEncoding("cp1251");
         }
         return list;
     }
+
+    private List getDaysOfWeeks(Date startNed, int weeks) {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM");
+        Calendar c1 = new GregorianCalendar();
+        Calendar c2 = new GregorianCalendar();
+        c1.setTime(startNed);
+        c2.setTime(c1.getTime());
+        c2.add(Calendar.DAY_OF_MONTH, 5);
+
+        List<String> days = new ArrayList();
+        for (int i = 0; i < weeks; i++) {
+            days.add(format.format(c1.getTime()) + " " + format.format(c2.getTime()));
+            c1.add(Calendar.DAY_OF_MONTH, 7);
+            c2.add(Calendar.DAY_OF_MONTH, 7);
+        }
+        return days;
+    }
+
+    private String getGr(int cource, int semestr) throws ClassNotFoundException {
+        StringBuilder sb = new StringBuilder();
+        List<SprGroup> list = getGroups(cource, semestr);
+        for (SprGroup sprGroup : list) {
+            sb.append("<li><a href='#' onclick='getGroups('getBody'," + sprGroup.getId() + ", " + semestr + ");'>" + sprGroup.getName() + "</a></li>");
+        }
+        return sb.toString();
+    }
+
 }
