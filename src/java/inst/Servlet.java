@@ -39,8 +39,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -68,31 +68,59 @@ public class Servlet extends HttpServlet {
             request.setAttribute("uch_semstr", uch_semstr);
 
             Class.forName("com.mysql.jdbc.Driver");
+//            try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+//                    CallableStatement proc = con.prepareCall("{call procedure1(" + 1 + "," + Integer.parseInt(uch_semstr) + ")}");) {
+//
+//                ResultSet rs = proc.executeQuery();
+//                rs.next();
+//                int weeks = rs.getInt("weeksOnSem");
+//                request.setAttribute("weeks", weeks);
+//
+//                int kursN = rs.getInt("kurs");
+//                request.setAttribute("kursN", kursN);
+//
+//                Date startNed = rs.getDate("semesters");
+//                request.setAttribute("d", getDaysOfWeeks(startNed, weeks));
+//
+//                request.setAttribute("startNed", startNed);
+//
+//                request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
+//
+//                request.getRequestDispatcher("newjsp.jsp").forward(request, response);
+////                response.sendRedirect("newjsp1.jsp");
+//            } catch (SQLException ex) {
+//                Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
-                    CallableStatement proc = con.prepareCall("{call procedure1(" + 1 + "," + Integer.parseInt(uch_semstr) + ")}");) {
+                    CallableStatement proc = con.prepareCall("{call p2(" + Integer.parseInt(uch_semstr) + ")}");) {
+
                 ResultSet rs = proc.executeQuery();
-                rs.next();
-                int weeks = rs.getInt("weeksOnSem");
-                request.setAttribute("weeks", weeks);
-                
-                int kursN = rs.getInt("kurs");
-                request.setAttribute("kursN", kursN);
-                
-                Date startNed = rs.getDate("semesters");
-                request.setAttribute("d", getDaysOfWeeks(startNed, weeks));
+                int i = 1;
+                while (rs.next()) {
+                    int kurs = rs.getInt("kurs");
+                    request.setAttribute("kurs"+i, kurs);
 
-                request.setAttribute("startNed", startNed);
-                
-                request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
+                    int weeks = rs.getInt("weeks");
+                    request.setAttribute("weeks"+i, weeks);
 
-                request.getRequestDispatcher("newjsp.jsp").forward(request, response);
-//                response.sendRedirect("newjsp1.jsp");
+                    Date startNed = rs.getDate("startNed");
+                    request.setAttribute("d"+i, getDaysOfWeeks(startNed, weeks));
+
+                    request.setAttribute("groups", getGroups(i++, Integer.parseInt(uch_semstr)));
+                }
+
             } catch (SQLException ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        request.getRequestDispatcher("newjsp.jsp").forward(request, response);
     }
 
     @Override

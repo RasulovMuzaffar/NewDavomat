@@ -59,26 +59,26 @@
                                 <th rowspan="4" class="text-center">Familiyasi, Ismi, Sharifi</th>
                                 <!--<th rowspan="4" class="text-center">Guruh</th>-->
                                 <th rowspan="4" class="text-center">G/K</th>
-                                <th colspan="${weeks*2}" class="text-center">Semestr davomidagi xaftalar</th>
+                                <th colspan="${weeks1*2}" class="text-center">Semestr davomidagi xaftalar</th>
                                 <th rowspan="4" class="text-center" style="font-size: 14pt"><b>&sum;</b></th>
                                 <th rowspan="4" class="text-center" style="background-color: #00dc00; font-size: 14pt"><b>&sum;</b></th>
                                 <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>&sum;</b></th>
                             </tr>
                             <tr>
-                                <c:forEach var="i" begin="1" end="${weeks}">
+                                <c:forEach var="i" begin="1" end="${weeks1}">
                                     <th colspan="2" class="text-center"><c:out value="${i}"/></th>
                                     </c:forEach>
                             </tr>
                             <tr>
-                                <c:forEach items="${d}" var="d">
+                                <c:forEach items="${d1}" var="d">
                                     <!--<th colspan="2" class="text-center">06.03 11.03</th>-->
                                     <th colspan="2" class="text-center">${d}</th>
                                     </c:forEach>
                             </tr>
                             <tr>
-                                <c:forEach begin="1" end="${weeks}">
-                                    <th class="text-center">U</th>
-                                    <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
+                                <c:forEach begin="1" end="${weeks1}">
+                                    <th class="text-center" data-d="2017-01-01">U</th>
+                                    <th class="text-center" data-d="2017-01-01" style="background-color: rgba(0,255,0,0.27)">S</th>
                                     </c:forEach>
                             </tr>
                         </thead>
@@ -96,26 +96,26 @@
                                 <th rowspan="4" class="text-center">Familiyasi, Ismi, Sharifi</th>
                                 <!--<th rowspan="4" class="text-center">Guruh</th>-->
                                 <th rowspan="4" class="text-center">G/K</th>
-                                <th colspan="${weeks*2}" class="text-center">Semestr davomidagi xaftalar</th>
+                                <th colspan="${weeks2*2}" class="text-center">Semestr davomidagi xaftalar</th>
                                 <th rowspan="4" class="text-center" style="font-size: 14pt"><b>&sum;</b></th>
                                 <th rowspan="4" class="text-center" style="background-color: #00dc00; font-size: 14pt"><b>&sum;</b></th>
                                 <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>&sum;</b></th>
                             </tr>
                             <tr>
-                                <c:forEach var="i" begin="1" end="${weeks}">
+                                <c:forEach var="i" begin="1" end="${weeks2}">
                                     <th colspan="2" class="text-center"><c:out value="${i}"/></th>
                                     </c:forEach>
                             </tr>
                             <tr>
-                                <c:forEach items="${d}" var="d">
+                                <c:forEach items="${d2}" var="d2">
                                     <!--<th colspan="2" class="text-center">06.03 11.03</th>-->
-                                    <th colspan="2" class="text-center">${d}</th>
+                                    <th colspan="2" class="text-center">${d2}</th>
                                     </c:forEach>
                             </tr>
                             <tr>
-                                <c:forEach begin="1" end="${weeks}">
-                                    <th class="text-center">U</th>
-                                    <th class="text-center" style="background-color: rgba(0,255,0,0.27)">S</th>
+                                <c:forEach begin="1" end="${weeks2}">
+                                    <th class="text-center" data-d="2017-01-01">U1</th><!--первый день недели-->
+                                    <th class="text-center"  data-d="2017-01-01" style="background-color: rgba(0,255,0,0.27)">S</th><!--первый день недели-->
                                     </c:forEach>
                             </tr>
                         </thead>
@@ -140,15 +140,24 @@
 
         <!--///скрипт для перехода по группам///-->
         <script>
-                                    $(function () {
-                                        $('ul.nav.nav-justified li a').click(function () {
-                                            // удаляем класс .active у всех кнопок
-                                            $('ul.nav.nav-justified li').each(function () {
-                                                $(this).removeClass('active');
-                                            });
-                                            //добавляем для нажатой
-                                            $(this).parent().addClass('active');
+            
+//                                    $(function () {
+//                                        $('ul.nav.nav-justified li a').click(function () {
+//                                            // удаляем класс .active у всех кнопок
+//                                            $('ul.nav.nav-justified li').each(function () {
+//                                                $(this).removeClass('active');
+//                                            });
+//                                            //добавляем для нажатой
+//                                            $(this).parent().addClass('active');
+//                                        });
+//                                    });
+                                    $(document).on('click', 'ul.nav.nav-justified li a', function () {
+                                        // удаляем класс .active у всех кнопок
+                                        $('ul.nav.nav-justified li').each(function () {
+                                            $(this).removeClass('active');
                                         });
+                                        //добавляем для нажатой
+                                        $(this).parent().addClass('active');
                                     });
         </script>
         <!--///////-->
@@ -182,6 +191,8 @@
                 });
             }
         </script>
+        
+        <script src="resources/js/qwerty.js"></script>
 
     </body>
 </html>
