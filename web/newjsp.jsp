@@ -13,11 +13,21 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Талабалар давомати</title>
+        <style id="st">
+            :root{
+                --st : 36;
+            }
+
+            .sdx{
+                width : calc(var(--w) * var(--st));
+            }
+        </style>
 
         <!-- Bootstrap -->
         <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-        <link href="resources/css/adminstyle.css" rel="stylesheet">
         <link href="resources/css/justified-nav.css" rel="stylesheet">
+        <link href="resources/css/adminstyle.css" rel="stylesheet">
+
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,87 +45,92 @@
             <div class="current_date"><strong>${uch_god} o'quv yili<br/><br/>${uch_semstr}-semestr</strong></div>
             <div class="tabs">
                 <input id="tab1" type="radio" name="tabs" checked>
-                <label for="tab1" title="I-kurs" onclick="getCources('getGr', 1, ${uch_semstr});">I-kurs</label>
+                <label for="tab1" title="I-kurs" onclick="getCources('getGr', 1, ${uch_semstr}, ${weeks1});">I-kurs</label>
                 <input id="tab2" type="radio" name="tabs">
-                <label for="tab2" title="II-kurs" onclick="getCources('getGr', 2, ${uch_semstr});">II-kurs</label>
+                <label for="tab2" title="II-kurs" onclick="getCources('getGr', 2, ${uch_semstr}, ${weeks2});">II-kurs</label>
                 <input id="tab3" type="radio" name="tabs">
-                <label for="tab3" title="III-kurs" onclick="getCources('getGr', 3, ${uch_semstr});">III-kurs</label>
+                <label for="tab3" title="III-kurs" onclick="getCources('getGr', 3, ${uch_semstr}, ${weeks3});">III-kurs</label>
                 <input id="tab4" type="radio" name="tabs">
-                <label for="tab4" title="IV-kurs" onclick="getCources('getGr', 4, ${uch_semstr});">IV-kurs</label>
+                <label for="tab4" title="IV-kurs" onclick="getCources('getGr', 4, ${uch_semstr}, ${weeks4});">IV-kurs</label>
                 <section id="content-tab1" >
                     <ul class="nav nav-justified grps">
                         <c:forEach items="${groups}" var="g">
                             <li>
-                                <a href="#" onclick="getGroups('getBody', ${g.id}, ${uch_semstr}, ${kursN});">${g.name}</a>
+                                <a href="#" onclick="getStudents('getBody', ${g.id}, ${uch_semstr}, 1);">${g.name}</a>
                             </li>
                         </c:forEach>
                     </ul>
 
                     <br/>
-                    <table class="table table-bordered">
+                    <!--<section class="s">-->
+                    <!--<div class="tContainer">-->
+                    <!--                            <table class="table table-bordered table-striped">-->
+                    <table class="table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th rowspan="4" class="text-center">#</th>
-                                <th rowspan="4" class="text-center">Familiyasi, Ismi, Sharifi</th>
+                                <th rowspan="4" class="n text-center">#</th>
+                                <th rowspan="4" class="fio text-center">Familiyasi, Ismi, Sharifi</th>
                                 <!--<th rowspan="4" class="text-center">Guruh</th>-->
-                                <th rowspan="4" class="text-center">G/K</th>
-                                <th colspan="${weeks1*2}" class="text-center">Semestr davomidagi xaftalar</th>
-                                <th rowspan="4" class="text-center" style="font-size: 14pt"><b>&sum;</b></th>
-                                <th rowspan="4" class="text-center" style="background-color: #00dc00; font-size: 14pt"><b>&sum;</b></th>
-                                <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>&sum;</b></th>
+                                <th rowspan="4" class="tip text-center"><div>G/K</div></th>
+                                <th colspan="${weeks1*2}" class="sdx text-center">Semestr davomidagi xaftalar</th>
+                                <th rowspan="4" class="summ text-center"><b>-</b></th>
+                                <th rowspan="4" class="summ text-center" style="background-color: #00dc00;"><b>+</b></th>
+                                <th rowspan="4" class="summ text-center" style="background-color: red;"><b>-</b></th>
                             </tr>
                             <tr>
                                 <c:forEach var="i" begin="1" end="${weeks1}">
-                                    <th colspan="2" class="text-center"><c:out value="${i}"/></th>
+                                    <th class="numbW" colspan="2"><c:out value="${i}"/></th>
                                     </c:forEach>
                             </tr>
                             <tr>
                                 <c:forEach items="${d1}" var="d">
                                     <!--<th colspan="2" class="text-center">06.03 11.03</th>-->
-                                    <th colspan="2" class="text-center">${d}</th>
+                                    <th class="week" colspan="2" class="text-center">${d}</th>
                                     </c:forEach>
                             </tr>
                             <tr>
-                                <c:forEach begin="1" end="${weeks1}">
-                                    <th class="text-center" data-d="2017-01-01">U</th>
-                                    <th class="text-center" data-d="2017-01-01" style="background-color: rgba(0,255,0,0.27)">S</th>
+                                <c:forEach items="${dDB1}" var="ddb">
+                                    <th class="prps text-center" data-d="${ddb}">P</th><!--первый день недели-->
+                                    <th class="prps text-center"  data-d="${ddb}" style="background-color: rgba(0,255,0,0.27)">U</th><!--первый день недели-->
                                     </c:forEach>
                             </tr>
                         </thead>
                         <tbody id="tbody1">
                         </tbody>
                     </table>
+                    <!--</div>-->
+                    <!--</section>-->
                 </section>
                 <section id="content-tab2">
                     <ul class="nav nav-justified grps"></ul>
                     <br/>
-                    <table class="table table-bordered">
+                    <table class="table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th rowspan="4" class="text-center">#</th>
-                                <th rowspan="4" class="text-center">Familiyasi, Ismi, Sharifi</th>
+                                <th rowspan="4" class="n text-center">#</th>
+                                <th rowspan="4" class="fio text-center">Familiyasi, Ismi, Sharifi</th>
                                 <!--<th rowspan="4" class="text-center">Guruh</th>-->
-                                <th rowspan="4" class="text-center">G/K</th>
-                                <th colspan="${weeks2*2}" class="text-center">Semestr davomidagi xaftalar</th>
-                                <th rowspan="4" class="text-center" style="font-size: 14pt"><b>&sum;</b></th>
-                                <th rowspan="4" class="text-center" style="background-color: #00dc00; font-size: 14pt"><b>&sum;</b></th>
-                                <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>&sum;</b></th>
+                                <th rowspan="4" class="tip text-center"><div>G/K</div></th>
+                                <th colspan="${weeks2*2}" class="sdx text-center">Semestr davomidagi xaftalar</th>
+                                <th rowspan="4" class="summ"><b>-</b></th>
+                                <th rowspan="4" class="summ" style="background-color: #00dc00;"><b>+</b></th>
+                                <th rowspan="4" class="summ" style="background-color: red;"><b>-</b></th>
                             </tr>
                             <tr>
                                 <c:forEach var="i" begin="1" end="${weeks2}">
-                                    <th colspan="2" class="text-center"><c:out value="${i}"/></th>
+                                    <th class="numbW" colspan="2" class="text-center"><c:out value="${i}"/></th>
                                     </c:forEach>
                             </tr>
                             <tr>
-                                <c:forEach items="${d2}" var="d2">
+                                <c:forEach items="${d2}" var="d">
                                     <!--<th colspan="2" class="text-center">06.03 11.03</th>-->
-                                    <th colspan="2" class="text-center">${d2}</th>
+                                    <th class="week" colspan="2" class="text-center">${d}</th>
                                     </c:forEach>
                             </tr>
                             <tr>
-                                <c:forEach begin="1" end="${weeks2}">
-                                    <th class="text-center" data-d="2017-01-01">U1</th><!--первый день недели-->
-                                    <th class="text-center"  data-d="2017-01-01" style="background-color: rgba(0,255,0,0.27)">S</th><!--первый день недели-->
+                                <c:forEach items="${dDB2}" var="ddb">
+                                    <th class="prps text-center" data-d="${ddb}">P</th><!--первый день недели-->
+                                    <th class="prps text-center"  data-d="${ddb}" style="background-color: rgba(0,255,0,0.27)">U</th><!--первый день недели-->
                                     </c:forEach>
                             </tr>
                         </thead>
@@ -125,9 +140,79 @@
                 </section>
                 <section id="content-tab3">
                     <p>3 kurs</p>
+                    <ul class="nav nav-justified grps"></ul>
+                    <br/>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th rowspan="4" class="text-center">#</th>
+                                <th rowspan="4" class="text-center">Familiyasi, Ismi, Sharifi</th>
+                                <!--<th rowspan="4" class="text-center">Guruh</th>-->
+                                <th rowspan="4" class="text-center">G/K</th>
+                                <th colspan="${weeks3*2}" class="text-center">Semestr davomidagi xaftalar</th>
+                                <th rowspan="4" class="text-center" style="font-size: 14pt"><b>-</b></th>
+                                <th rowspan="4" class="text-center" style="background-color: #00dc00; font-size: 14pt"><b>+</b></th>
+                                <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>-</b></th>
+                            </tr>
+                            <tr>
+                                <c:forEach var="i" begin="1" end="${weeks3}">
+                                    <th colspan="2" class="text-center"><c:out value="${i}"/></th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="${d3}" var="d3">
+                                    <!--<th colspan="2" class="text-center">06.03 11.03</th>-->
+                                    <th colspan="2" class="text-center">${d3}</th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="${dDB3}" var="ddb">
+                                    <th class="text-center" data-d="${ddb}">P</th><!--первый день недели-->
+                                    <th class="text-center"  data-d="${ddb}" style="background-color: rgba(0,255,0,0.27)">U</th><!--первый день недели-->
+                                    </c:forEach>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody2">
+                        </tbody>
+                    </table>
                 </section>
                 <section id="content-tab4">
                     <p> 4 kurs</p>
+                    <ul class="nav nav-justified grps"></ul>
+                    <br/>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th rowspan="4" class="text-center">#</th>
+                                <th rowspan="4" class="text-center">Familiyasi, Ismi, Sharifi</th>
+                                <!--<th rowspan="4" class="text-center">Guruh</th>-->
+                                <th rowspan="4" class="text-center">G/K</th>
+                                <th colspan="${weeks4*2}" class="text-center">Semestr davomidagi xaftalar</th>
+                                <th rowspan="4" class="text-center" style="font-size: 14pt"><b>&sum;</b></th>
+                                <th rowspan="4" class="text-center" style="background-color: #00dc00; font-size: 14pt"><b>&sum;</b></th>
+                                <th rowspan="4" class="text-center" style="background-color: red; font-size: 14pt"><b>&sum;</b></th>
+                            </tr>
+                            <tr>
+                                <c:forEach var="i" begin="1" end="${weeks4}">
+                                    <th colspan="2" class="text-center"><c:out value="${i}"/></th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="${d4}" var="d4">
+                                    <!--<th colspan="2" class="text-center">06.03 11.03</th>-->
+                                    <th colspan="2" class="text-center">${d4}</th>
+                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="${dDB4}" var="ddb">
+                                    <th class="text-center" data-d="${ddb}">P</th><!--первый день недели-->
+                                    <th class="text-center"  data-d="${ddb}" style="background-color: rgba(0,255,0,0.27)">U</th><!--первый день недели-->
+                                    </c:forEach>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody4">
+                        </tbody>
+                    </table>
                 </section>
             </div>
             <!--<div class="info"> сделано с любовью: <a href="http://twitter.com/dobrovoi"><i class="fa fa-heart"></i> dobrovoi</a> </div>-->
@@ -140,7 +225,7 @@
 
         <!--///скрипт для перехода по группам///-->
         <script>
-            
+
 //                                    $(function () {
 //                                        $('ul.nav.nav-justified li a').click(function () {
 //                                            // удаляем класс .active у всех кнопок
@@ -162,7 +247,8 @@
         </script>
         <!--///////-->
         <script>
-            function getGroups(p, id, semestr, kursN) {
+            function getStudents(p, id, semestr, kursN) {
+                console.log(p + " , " + id + " , " + semestr + " , " + kursN);
                 $.post('servlet', {command: p, id: id, semestr: semestr}, function (data) {
                     console.log(data);
                     switch (kursN) {
@@ -182,17 +268,16 @@
                 });
             }
 
-            function getCources(p, kurs, sem) {
+            function getCources(p, kurs, sem, weeks) {
                 $.post('servlet', {command: p, kurs: kurs, semestr: sem}, function (data) {
-                    console.log("---- " + data);
-//                    document.getElementsByClassName("grps").innerHTML = data;
+                    document.getElementById("st").innerHTML = ":root{--st : " + (weeks * 2) + ";} .sdx{width : calc(var(--w) * var(--st));}"
                     $('.grps').empty();
                     $('.grps').append(data);
                 });
             }
         </script>
-        
-        <script src="resources/js/qwerty.js"></script>
+
+        <script src="resources/js/editPosesh.js" type="text/javascript"></script>
 
     </body>
 </html>

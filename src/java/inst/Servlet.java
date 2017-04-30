@@ -39,8 +39,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -102,15 +102,25 @@ public class Servlet extends HttpServlet {
                 int i = 1;
                 while (rs.next()) {
                     int kurs = rs.getInt("kurs");
-                    request.setAttribute("kurs"+i, kurs);
-
+                    request.setAttribute("kurs" + i, kurs);
+                    System.out.println("kurs" + i + " = " + kurs);
                     int weeks = rs.getInt("weeks");
-                    request.setAttribute("weeks"+i, weeks);
+                    request.setAttribute("weeks" + i, weeks);
+                    System.out.println("weeks" + i + " = " + weeks);
 
                     Date startNed = rs.getDate("startNed");
-                    request.setAttribute("d"+i, getDaysOfWeeks(startNed, weeks));
+                    request.setAttribute("d" + i, getDaysOfWeeks(startNed, weeks));
+                    request.setAttribute("dDB" + i, getDaysOfWeeksToDB(startNed, weeks));
+                    i++;
+//                    System.out.println("ddb = " + getDaysOfWeeks(startNed, weeks));
 
-                    request.setAttribute("groups", getGroups(i++, Integer.parseInt(uch_semstr)));
+                    List<SprGroup> sprG = getGroups(1, Integer.parseInt(uch_semstr));
+                    request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
+//                    for (SprGroup s : sprG) {
+//                        System.out.println(s.getId() + " , " + s.getName() + " , " + s.getIdFac());
+//                    }
+
+//                    i++;
                 }
 
             } catch (SQLException ex) {
@@ -132,6 +142,9 @@ public class Servlet extends HttpServlet {
         int id = 0;
         int semestr = 0;
         int cource = 0;
+        String data = null;
+        int znach = 0;
+        int tip = 0;
         command = request.getParameter("command");
 
         switch (command) {
@@ -144,8 +157,10 @@ public class Servlet extends HttpServlet {
                     Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
                     System.out.println("ClassNotFoundException ex ==> " + ex);
                 }
+                break;
             }
-            case "getGr":
+            case "getGr": {
+                System.out.println(request.getParameter("kurs"));
                 cource = Integer.parseInt(request.getParameter("kurs"));
                 semestr = Integer.parseInt(request.getParameter("semestr"));
 
@@ -155,14 +170,21 @@ public class Servlet extends HttpServlet {
                     Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
+            }
+            case "add": {
+
+                id = Integer.parseInt(request.getParameter("id_st"));
+                data = request.getParameter("data");
+                znach = Integer.parseInt(request.getParameter("znach"));
+                tip = Integer.parseInt(request.getParameter("tip"));
+
+                addPosesh(id, data, znach, tip);
+                out.print("Success");
+                break;
+            }
         }
 
 //        System.out.println("id = " + id + " ; semestr = " + semestr);
-    }
-
-    private String getSum(int id, String name) {
-//        out.print(id + name);
-        return id + name;
     }
 
     private String getBody(int id, int semestr) throws ClassNotFoundException {
@@ -178,9 +200,9 @@ public class Servlet extends HttpServlet {
             rs = proc.getResultSet();
             while (rs.next()) {
                 sb.append("<tr data-id_user='").append(rs.getInt("id")).append("'>"
-                        + "<td>").append(rs.getInt("nomer")).append("</td>")
-                        .append("<td>").append(rs.getString("FIO")).append("</td>")
-                        .append("<td>").append(rs.getString("type_name")).append("</td>");
+                        + "<td class='n'>").append(rs.getInt("nomer")).append("</td>")
+                        .append("<td class='fio'>").append(rs.getString("FIO")).append("</td>")
+                        .append("<td class='tip'>").append(rs.getString("type_name")).append("</td>");
                 int i = 1;
                 int prop = 0;
                 int uv_prop = 0;
@@ -188,22 +210,24 @@ public class Servlet extends HttpServlet {
                     if (rs.getString("w" + i).length() > 0) {
                         String[] str = rs.getString("w" + i).split(":");
                         String[] str1 = str[0].split("§");
-                        sb.append("<td data-p='1' data-id_posesh='").append(str[1]).append("'>").append(str1[0])
-                                .append("</td><td data-p='2' data-id_posesh='").append(str[1]).append("'>").append(str1[1]).append("</td>");
+                        sb.append("<td data-p='1' data-id_posesh='")
+                                .append(str[1]).append("'>").append(str1[0].equals("0")?"":str1[0])
+                                .append("</td><td data-p='2' data-id_posesh='").append(str[1]).append("'>")
+                                .append(str1[1].equals("0")?"":str1[1]).append("</td>");
 
                         prop += Integer.parseInt(str1[0]);
                         uv_prop += Integer.parseInt(str1[1]);
                     } else {
-                        sb.append("<td data-p='1'></td><td data-p='2'></td>");
+                        sb.append("<td data-p='1'></td><td class='prps' data-p='2'></td>");
                     }
                     i++;
                 }
                 if ((prop - uv_prop) < 40) {
-                    sb.append("<td>").append(prop).append("</td><td>").append(uv_prop)
-                            .append("</td><td><strong>").append(prop - uv_prop).append("</strong></td>");
+                    sb.append("<td class='summ prop'>").append(prop).append("</td><td class='summ uv_prop'>").append(uv_prop)
+                            .append("</td><td class='summ neUv_prop'><strong>").append(prop - uv_prop).append("</strong></td>");
                 } else {
-                    sb.append("<td>").append(prop).append("</td><td>").append(uv_prop)
-                            .append("</td><td><strong style = color:red;>").append(prop - uv_prop).append("</strong></td>");
+                    sb.append("<td class='summ prop'>").append(prop).append("</td><td class='summ uv_prop'>").append(uv_prop)
+                            .append("</td><td class='summ neUv_prop'><strong style = color:red;>").append(prop - uv_prop).append("</strong></td>");
                 }
                 prop = 0;
                 uv_prop = 0;
@@ -217,7 +241,8 @@ public class Servlet extends HttpServlet {
     }
 
     private List getGroups(int kurs, int sem) throws ClassNotFoundException {
-        String sql = "select id, name, id_faculty from spr_group";
+        System.out.println("kurs " + kurs + " : sem " + sem);
+//        String sql = "select id, name, id_faculty from spr_group";
         String sql2 = "SELECT spr_group.id, spr_group.name, spr_group.id_faculty FROM grafik INNER JOIN spr_group ON grafik.id_group = spr_group.id WHERE grafik.kurs = " + kurs
                 + " AND semester=" + sem;
 
@@ -246,10 +271,32 @@ public class Servlet extends HttpServlet {
 
         List<String> days = new ArrayList();
         for (int i = 0; i < weeks; i++) {
-            days.add(format.format(c1.getTime()) + " " + format.format(c2.getTime()));
+            days.add(format.format(c1.getTime()) + "<br>" + format.format(c2.getTime()));
             c1.add(Calendar.DAY_OF_MONTH, 7);
             c2.add(Calendar.DAY_OF_MONTH, 7);
         }
+        return days;
+    }
+
+    private List getDaysOfWeeksToDB(Date startNed, int weeks) {
+        System.out.println("----------------- getDaysOfWeeksToDB --------------------" + startNed + " : " + weeks);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c1 = new GregorianCalendar();
+//        Calendar c2 = new GregorianCalendar();
+        c1.setTime(startNed);
+//        c2.setTime(c1.getTime());
+//        c2.add(Calendar.DAY_OF_MONTH, 5);
+
+        List<String> days = new ArrayList();
+        for (int i = 0; i < weeks; i++) {
+            days.add(format.format(c1.getTime()));
+            c1.add(Calendar.DAY_OF_MONTH, 7);
+//            c2.add(Calendar.DAY_OF_MONTH, 7);
+        }
+        
+        days.forEach((day) -> {
+            System.out.println(day);
+        });
         return days;
     }
 
@@ -257,10 +304,43 @@ public class Servlet extends HttpServlet {
         StringBuilder sb = new StringBuilder();
         List<SprGroup> list = getGroups(cource, semestr);
         for (SprGroup sprGroup : list) {
-            sb.append("<li><a href='#' onclick=getGroups('getBody'," + sprGroup.getId() + "," + semestr + "," + cource + ");>" + sprGroup.getName() + "</a></li>"
+            sb.append("<li><a href='#' onclick=getStudents('getBody'," + sprGroup.getId() + "," + semestr + "," + cource + ");>" + sprGroup.getName() + "</a></li>"
             );
         }
         return sb.toString();
+    }
+
+    private void addPosesh(int id, String data, int znach, int tip) {
+        System.out.println("------------- call proc_posesh_add ----------------");
+        System.out.println("{call proc_posesh_add(" + id + ",'" + data + "'," + znach + "," + tip + ")}");
+        try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                CallableStatement proc = con.prepareCall("{call proc_posesh_add(" + id + ",'" + data + "'," + znach + "," + tip + ")}");) {
+
+            proc.execute();
+//            int i = 1;
+//            while (rs.next()) {
+//                int kurs = rs.getInt("kurs");
+//                request.setAttribute("kurs" + i, kurs);
+//                System.out.println("kurs" + i + " = " + kurs);
+//                int weeks = rs.getInt("weeks");
+//                request.setAttribute("weeks" + i, weeks);
+//                System.out.println("weeks" + i + " = " + weeks);
+//
+//                Date startNed = rs.getDate("startNed");
+//                request.setAttribute("d" + i, getDaysOfWeeks(startNed, weeks));
+//                System.out.println("d" + i++ + " = " + getDaysOfWeeks(startNed, weeks));
+//                List<SprGroup> sprG = getGroups(1, Integer.parseInt(uch_semstr));
+//                request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
+////                    for (SprGroup s : sprG) {
+////                        System.out.println(s.getId() + " , " + s.getName() + " , " + s.getIdFac());
+////                    }
+//
+////                    i++;
+//            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
