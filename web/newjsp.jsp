@@ -52,6 +52,8 @@
                 <label for="tab3" title="III-kurs" onclick="getCources('getGr', 3, ${uch_semstr}, ${weeks3});">III-kurs</label>
                 <input id="tab4" type="radio" name="tabs">
                 <label for="tab4" title="IV-kurs" onclick="getCources('getGr', 4, ${uch_semstr}, ${weeks4});">IV-kurs</label>
+                <input id="tab5" type="radio" name="tabs">
+                <label for="tab5" title="Отчет">Отчет</label>
                 <section id="content-tab1" >
                     <ul class="nav nav-justified grps">
                         <c:forEach items="${groups}" var="g">
@@ -213,6 +215,55 @@
                         <tbody id="tbody4">
                         </tbody>
                     </table>
+                </section>
+                <!----------------------------------------------->
+                <section id="content-tab5">
+                    <p>Письмы!</p>
+                    <div class="row">
+                        <div class="container">
+                            <div class="col-md-3">
+                                <div class="control-group">
+                                    <label class="control-label" for="kurs">Выберите курс</label>
+                                    <div class="controls">
+                                        <select id="kurs">
+                                            <option>Выберите</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="control-group">
+                                    <label class="control-label" for="sem">Выберите семестр</label>
+                                    <div class="controls">
+                                        <select id="sem">
+                                            <option>Выберите</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="control-group">
+                                    <label class="control-label" for="sem">Количество пропусков</label>
+                                    <div class="controls">
+                                        <input type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <button type="submit" class="btn btn-primary" value="OK"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
             <!--<div class="info"> сделано с любовью: <a href="http://twitter.com/dobrovoi"><i class="fa fa-heart"></i> dobrovoi</a> </div>-->

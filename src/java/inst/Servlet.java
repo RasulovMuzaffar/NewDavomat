@@ -39,8 +39,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
