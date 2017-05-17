@@ -218,11 +218,11 @@
                 </section>
                 <!----------------------------------------------->
                 <section id="content-tab5">
-                    <p>Письмы!</p>
-                    <form class="well form-inline">
+                    <div class="well form-inline">
                         <!--<label class="control-label col-xs-2">Курс</label>-->
                         <select class="form-control">
                             <option>Выберите</option>
+                            <option>Все курсы</option>
                             <option>I курс</option>
                             <option>II курс</option>
                             <option>III курс</option>
@@ -238,7 +238,7 @@
                         <input type="text" class="form-control" placeholder="Укажите пропуски">
                         <button type="submit" class="btn btn-success">Показать</button>
                         <button type="submit" class="btn btn-danger">Создать письмо</button>
-                    </form>
+                    </div>
                 </section>
             </div>
             <!--<div class="info"> сделано с любовью: <a href="http://twitter.com/dobrovoi"><i class="fa fa-heart"></i> dobrovoi</a> </div>-->
