@@ -219,51 +219,26 @@
                 <!----------------------------------------------->
                 <section id="content-tab5">
                     <p>Письмы!</p>
-                    <div class="row">
-                        <div class="container">
-                            <div class="col-md-3">
-                                <div class="control-group">
-                                    <label class="control-label" for="kurs">Выберите курс</label>
-                                    <div class="controls">
-                                        <select id="kurs">
-                                            <option>Выберите</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="control-group">
-                                    <label class="control-label" for="sem">Выберите семестр</label>
-                                    <div class="controls">
-                                        <select id="sem">
-                                            <option>Выберите</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="control-group">
-                                    <label class="control-label" for="sem">Количество пропусков</label>
-                                    <div class="controls">
-                                        <input type="text"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <button type="submit" class="btn btn-primary" value="OK"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <form class="well form-inline">
+                        <!--<label class="control-label col-xs-2">Курс</label>-->
+                        <select class="form-control">
+                            <option>Выберите</option>
+                            <option>I курс</option>
+                            <option>II курс</option>
+                            <option>III курс</option>
+                            <option>IV курс</option>
+                        </select>
+                        <!--<label class="control-label col-xs-2">Семетр</label>-->
+                        <select class="form-control">
+                            <option>Выберите</option>
+                            <option>1 семестр</option>
+                            <option>2 семестр</option>
+                        </select>
+                        <!--<label class="control-label col-xs-2">Укажите минимальные пропуски</label>-->
+                        <input type="text" class="form-control" placeholder="Укажите пропуски">
+                        <button type="submit" class="btn btn-success">Показать</button>
+                        <button type="submit" class="btn btn-danger">Создать письмо</button>
+                    </form>
                 </section>
             </div>
             <!--<div class="info"> сделано с любовью: <a href="http://twitter.com/dobrovoi"><i class="fa fa-heart"></i> dobrovoi</a> </div>-->
