@@ -218,27 +218,28 @@
                 </section>
                 <!----------------------------------------------->
                 <section id="content-tab5">
-                    <div class="well form-inline">
+                    <form class="well form-inline">
                         <!--<label class="control-label col-xs-2">Курс</label>-->
-                        <select class="form-control">
+                        <select class="form-control" id="kurs">
                             <option>Выберите</option>
-                            <option>Все курсы</option>
-                            <option>I курс</option>
-                            <option>II курс</option>
-                            <option>III курс</option>
-                            <option>IV курс</option>
+                            <option value="0">Все курсы</option>
+                            <option value="1">I курс</option>
+                            <option value="2">II курс</option>
+                            <option value="3">III курс</option>
+                            <option value="4">IV курс</option>
                         </select>
                         <!--<label class="control-label col-xs-2">Семетр</label>-->
-                        <select class="form-control">
+                        <select class="form-control" id="sem">
                             <option>Выберите</option>
-                            <option>1 семестр</option>
-                            <option>2 семестр</option>
+                            <option value="1">1 семестр</option>
+                            <option value="2">2 семестр</option>
                         </select>
                         <!--<label class="control-label col-xs-2">Укажите минимальные пропуски</label>-->
-                        <input type="text" class="form-control" placeholder="Укажите пропуски">
-                        <button type="submit" class="btn btn-success">Показать</button>
+                        <input type="text" id="h" class="form-control" placeholder="Укажите пропуски">
+                        <button type="submit" class="btn btn-success" onclick="getList();" required>Показать</button>
                         <button type="submit" class="btn btn-danger">Создать письмо</button>
-                    </div>
+                    </form>
+                    <table class="table table-bordered table-striped"></table>
                 </section>
             </div>
             <!--<div class="info"> сделано с любовью: <a href="http://twitter.com/dobrovoi"><i class="fa fa-heart"></i> dobrovoi</a> </div>-->
@@ -262,14 +263,14 @@
 //                                            $(this).parent().addClass('active');
 //                                        });
 //                                    });
-                                    $(document).on('click', 'ul.nav.nav-justified li a', function () {
-                                        // удаляем класс .active у всех кнопок
-                                        $('ul.nav.nav-justified li').each(function () {
-                                            $(this).removeClass('active');
-                                        });
-                                        //добавляем для нажатой
-                                        $(this).parent().addClass('active');
-                                    });
+                            $(document).on('click', 'ul.nav.nav-justified li a', function () {
+                                // удаляем класс .active у всех кнопок
+                                $('ul.nav.nav-justified li').each(function () {
+                                    $(this).removeClass('active');
+                                });
+                                //добавляем для нажатой
+                                $(this).parent().addClass('active');
+                            });
         </script>
         <!--///////-->
         <script>
@@ -299,6 +300,18 @@
                     document.getElementById("st").innerHTML = ":root{--st : " + (weeks * 2) + ";} .sdx{width : calc(var(--w) * var(--st));}"
                     $('.grps').empty();
                     $('.grps').append(data);
+                });
+            }
+
+            function getList() {
+                var kurs = $("#kurs").val();
+                var sem = $("#sem").val();
+                var h = $("#h").val();
+                console.log(kurs);
+                console.log(sem);
+                console.log(h);
+                $.post('servlet', {command: "getList", kurs: kurs, sem: sem, h: h}, function (data) {
+                    console.log(data);
                 });
             }
         </script>

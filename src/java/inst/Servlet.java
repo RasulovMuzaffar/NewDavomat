@@ -39,8 +39,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,9 +48,6 @@ public class Servlet extends HttpServlet {
 
         try {
             response.setContentType(CONTENT_TYPE);
-//            response.setCharacterEncoding("utf-8");
-//            PrintWriter out = response.getWriter();
-//            out.print("вроде работает!");
 
             Calendar c = new GregorianCalendar();
             if (c.get(Calendar.MONTH) < 8) {
@@ -68,32 +65,6 @@ public class Servlet extends HttpServlet {
             request.setAttribute("uch_semstr", uch_semstr);
 
             Class.forName("com.mysql.jdbc.Driver");
-//            try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
-//                    CallableStatement proc = con.prepareCall("{call procedure1(" + 1 + "," + Integer.parseInt(uch_semstr) + ")}");) {
-//
-//                ResultSet rs = proc.executeQuery();
-//                rs.next();
-//                int weeks = rs.getInt("weeksOnSem");
-//                request.setAttribute("weeks", weeks);
-//
-//                int kursN = rs.getInt("kurs");
-//                request.setAttribute("kursN", kursN);
-//
-//                Date startNed = rs.getDate("semesters");
-//                request.setAttribute("d", getDaysOfWeeks(startNed, weeks));
-//
-//                request.setAttribute("startNed", startNed);
-//
-//                request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
-//
-//                request.getRequestDispatcher("newjsp.jsp").forward(request, response);
-////                response.sendRedirect("newjsp1.jsp");
-//            } catch (SQLException ex) {
-//                Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
 
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
                     CallableStatement proc = con.prepareCall("{call p2(" + Integer.parseInt(uch_semstr) + ")}");) {
@@ -112,15 +83,9 @@ public class Servlet extends HttpServlet {
                     request.setAttribute("d" + i, getDaysOfWeeks(startNed, weeks));
                     request.setAttribute("dDB" + i, getDaysOfWeeksToDB(startNed, weeks));
                     i++;
-//                    System.out.println("ddb = " + getDaysOfWeeks(startNed, weeks));
 
                     List<SprGroup> sprG = getGroups(1, Integer.parseInt(uch_semstr));
                     request.setAttribute("groups", getGroups(1, Integer.parseInt(uch_semstr)));
-//                    for (SprGroup s : sprG) {
-//                        System.out.println(s.getId() + " , " + s.getName() + " , " + s.getIdFac());
-//                    }
-
-//                    i++;
                 }
 
             } catch (SQLException ex) {
@@ -141,10 +106,11 @@ public class Servlet extends HttpServlet {
         String command;
         int id = 0;
         int semestr = 0;
-        int cource = 0;
+        int course = 0;
         String data = null;
         int znach = 0;
         int tip = 0;
+        int chasi = 0;
         command = request.getParameter("command");
 
         switch (command) {
@@ -161,11 +127,11 @@ public class Servlet extends HttpServlet {
             }
             case "getGr": {
                 System.out.println(request.getParameter("kurs"));
-                cource = Integer.parseInt(request.getParameter("kurs"));
+                course = Integer.parseInt(request.getParameter("kurs"));
                 semestr = Integer.parseInt(request.getParameter("semestr"));
 
                 try {
-                    out.print(getGr(cource, semestr));
+                    out.print(getGr(course, semestr));
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -180,6 +146,15 @@ public class Servlet extends HttpServlet {
 
                 addPosesh(id, data, znach, tip);
                 out.print("Success");
+                break;
+            }
+            case "getList": {
+                course = Integer.parseInt(request.getParameter("kurs"));
+                semestr = Integer.parseInt(request.getParameter("sem"));
+                chasi = Integer.parseInt(request.getParameter("h"));
+
+                getList(course, semestr, chasi);
+                out.print("success!");
                 break;
             }
         }
@@ -211,9 +186,9 @@ public class Servlet extends HttpServlet {
                         String[] str = rs.getString("w" + i).split(":");
                         String[] str1 = str[0].split("§");
                         sb.append("<td data-p='1' data-id_posesh='")
-                                .append(str[1]).append("'>").append(str1[0].equals("0")?"":str1[0])
+                                .append(str[1]).append("'>").append(str1[0].equals("0") ? "" : str1[0])
                                 .append("</td><td data-p='2' data-id_posesh='").append(str[1]).append("'>")
-                                .append(str1[1].equals("0")?"":str1[1]).append("</td>");
+                                .append(str1[1].equals("0") ? "" : str1[1]).append("</td>");
 
                         prop += Integer.parseInt(str1[0]);
                         uv_prop += Integer.parseInt(str1[1]);
@@ -233,7 +208,6 @@ public class Servlet extends HttpServlet {
                 uv_prop = 0;
                 sb.append("</tr>");
             }
-//            System.out.println("sb ---> " + sb);
         } catch (SQLException ex) {
             System.out.println("SQLException --->>> " + ex);
         }
@@ -282,10 +256,7 @@ public class Servlet extends HttpServlet {
         System.out.println("----------------- getDaysOfWeeksToDB --------------------" + startNed + " : " + weeks);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c1 = new GregorianCalendar();
-//        Calendar c2 = new GregorianCalendar();
         c1.setTime(startNed);
-//        c2.setTime(c1.getTime());
-//        c2.add(Calendar.DAY_OF_MONTH, 5);
 
         List<String> days = new ArrayList();
         for (int i = 0; i < weeks; i++) {
@@ -293,7 +264,7 @@ public class Servlet extends HttpServlet {
             c1.add(Calendar.DAY_OF_MONTH, 7);
 //            c2.add(Calendar.DAY_OF_MONTH, 7);
         }
-        
+
         days.forEach((day) -> {
             System.out.println(day);
         });
@@ -341,6 +312,10 @@ public class Servlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void getList(int course, int semestr, int chasi) {
+        System.out.println(course + " " + semestr + " " + chasi);
     }
 
 }
