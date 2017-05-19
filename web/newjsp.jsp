@@ -221,7 +221,7 @@
                     <form class="well form-inline">
                         <!--<label class="control-label col-xs-2">Курс</label>-->
                         <select class="form-control" id="kurs">
-                            <option>Выберите</option>
+                            <!--<option value="">Выберите</option>-->
                             <option value="0">Все курсы</option>
                             <option value="1">I курс</option>
                             <option value="2">II курс</option>
@@ -230,16 +230,24 @@
                         </select>
                         <!--<label class="control-label col-xs-2">Семетр</label>-->
                         <select class="form-control" id="sem">
-                            <option>Выберите</option>
-                            <option value="1">1 семестр</option>
-                            <option value="2">2 семестр</option>
+                            <c:if test="${uch_semstr==1}">
+                                <option value="1" selected>1 семестр</option>
+                                <option value="2">2 семестр</option>
+                            </c:if>
+                            <c:if test="${uch_semstr==2}">
+                                <option value="1">1 семестр</option>
+                            <option value="2" selected>2 семестр</option>
+                            </c:if>
                         </select>
                         <!--<label class="control-label col-xs-2">Укажите минимальные пропуски</label>-->
-                        <input type="text" id="h" class="form-control" placeholder="Укажите пропуски">
-                        <button type="submit" class="btn btn-success" onclick="getList();" required>Показать</button>
-                        <button type="submit" class="btn btn-danger">Создать письмо</button>
+                        <input type="text" id="h" class="form-control" placeholder="Укажите пропуски" onclick="h_click(this);">
+                        <button type="button" class="btn btn-success" onclick="getList();">Показать</button>
+                        <button type="button" id="SP" class="btn btn-danger" disabled>Создать письмо</button>
                     </form>
-                    <table class="table table-bordered table-striped"></table>
+                    <table class="table table-bordered table-striped">
+                        <thead><tr><th>№</th><th>Ф.И.О. студента</th><th>Курс</th><th>Группа</th><th>Количество пропусков</th></thead>
+                        <tbody id="listSt"></tbody>
+                    </table>
                 </section>
             </div>
             <!--<div class="info"> сделано с любовью: <a href="http://twitter.com/dobrovoi"><i class="fa fa-heart"></i> dobrovoi</a> </div>-->
@@ -302,20 +310,8 @@
                     $('.grps').append(data);
                 });
             }
-
-            function getList() {
-                var kurs = $("#kurs").val();
-                var sem = $("#sem").val();
-                var h = $("#h").val();
-                console.log(kurs);
-                console.log(sem);
-                console.log(h);
-                $.post('servlet', {command: "getList", kurs: kurs, sem: sem, h: h}, function (data) {
-                    console.log(data);
-                });
-            }
         </script>
-
+        <script src="resources/js/getList.js" type="text/javascript"></script>
         <script src="resources/js/editPosesh.js" type="text/javascript"></script>
 
     </body>

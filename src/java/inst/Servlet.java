@@ -39,8 +39,8 @@ public class Servlet extends HttpServlet {
     static String uch_god;
     static String uch_semstr;
     private static final String URL = "jdbc:mysql://localhost:3306/students";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -153,8 +153,7 @@ public class Servlet extends HttpServlet {
                 semestr = Integer.parseInt(request.getParameter("sem"));
                 chasi = Integer.parseInt(request.getParameter("h"));
 
-                getList(course, semestr, chasi);
-                out.print("success!");
+                out.print(getList(course, semestr, chasi));
                 break;
             }
         }
@@ -314,8 +313,28 @@ public class Servlet extends HttpServlet {
         }
     }
 
-    private void getList(int course, int semestr, int chasi) {
-        System.out.println(course + " " + semestr + " " + chasi);
+    private String getList(int course, int semestr, int chasi) {
+        StringBuilder sb = new StringBuilder();
+        try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                CallableStatement proc = con.prepareCall("{call filtr(" + course + "," + semestr + "," + chasi + ")}");) {
+//            sb.append("<thead><tr><th>№</th><th>Ф.И.О. студента</th><th>Курс</th><th>Группа</th><th>Количество пропусков</th></thead>");
+            ResultSet rs = proc.executeQuery();
+            while (rs.next()) {
+                sb.append("<tr><td>").
+                append(rs.getInt("nomer")).append("</td></tr>")
+                        .append("<td>").
+                append(rs.getString("fio")).append("</td>")
+                        .append("<td>").
+                append(rs.getString("kurs")).append("</td>")
+                        .append("<td>").
+                append(rs.getString("gr")).append("</td>")
+                        .append("<td>").
+                append(rs.getString("sumNeuvProp")).append("</td></tr>");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sb.toString();
     }
 
 }
