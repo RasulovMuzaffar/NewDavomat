@@ -1,0 +1,227 @@
+html,
+body {
+    height: 100%;
+    /*overflow-y: hidden;*/
+}
+
+body {
+    font: 14px/1 "Open Sans", sans-serif;
+    color: #555;
+    background: #fafafa;
+}
+
+body {
+    background-color: #e5e6e6;
+}
+
+.header {
+    /*height: 50px;*/
+    width: 100%;
+    border-bottom: 1px groove #eeeeee;
+}
+
+.h-left-panel {
+    width: 50%;
+    float: left;
+}
+
+.h-left-panel h1 {
+    margin-top: 0;
+    margin-left: 5px;
+    color: #4d6768;
+}
+
+.h-right-panel {
+    width: 50%;
+    float: right;
+    text-align: right;
+}
+
+.logout {
+    margin-top: 3px;
+}
+
+.logout a {
+    color: red;
+    text-decoration: none;
+}
+
+.info h3 {
+    margin-top: 0px;
+    color: #678889;
+}
+
+.container-fluid h3{
+    margin-top: 0px;
+}
+.current_date{
+    float: right;
+    color: #4d6768;
+    margin-bottom: 0;
+    text-align: right;
+}
+.container {
+    min-width: 800px;
+    max-width: 100%;
+    /*margin: 0 auto;*/
+    padding: 25px 10px 0;
+}
+
+.tabs {
+    min-width: 800px;
+    max-width: 100%;
+    padding: 0px;
+    margin: 0 auto;
+    /*position: absolute;*/
+}
+/* Стили секций с содержанием */
+
+.tabs > section {
+    display: none;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.tabs > section > p {
+    margin: 0 0 5px;
+    line-height: 1.5;
+    color: #383838;
+    /* прикрутим анимацию */
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+/* Описываем анимацию свойства opacity */
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Прячем чекбоксы */
+
+.tabs > input {
+    display: none;
+    position: absolute;
+}
+/* Стили переключателей вкладок (табов) */
+
+.tabs > label {
+    display: inline-block;
+    margin: 0 0 -1px;
+    padding: 15px 25px;
+    font-weight: 600;
+    text-align: center;
+    color: #aaa;
+    border: 0px solid #ddd;
+     border-width: 1px 1px 1px 1px;
+    background: #f1f1f1;
+    border-radius: 3px 3px 0 0;
+}
+
+.tabs > label:hover {
+    color: #888;
+    cursor: pointer;
+}
+
+.tabs > input:checked + label {
+    color: #555;
+    border-top: 1px solid #009933;
+    border-bottom: 1px solid #fff;
+    background: #fff;
+}
+
+#tab1:checked ~ #content-tab1,
+#tab2:checked ~ #content-tab2,
+#tab3:checked ~ #content-tab3,
+#tab4:checked ~ #content-tab4,
+#tab5:checked ~ #content-tab5 {
+    display: block;
+}
+section{
+    max-height: 100%;
+    overflow-y: auto;
+}
+/* Убираем текст с переключателей
+* и оставляем иконки на малых экранах
+*/
+
+@media screen and (max-width: 680px) {
+    .tabs > label {
+        font-size: 0;
+    }
+    .tabs > label:before {
+        margin: 0;
+        font-size: 18px;
+    }
+}
+/* Изменяем внутренние отступы
+*  переключателей для малых экранов
+*/
+
+@media screen and (max-width: 400px) {
+    .tabs > label {
+        padding: 15px;
+    }
+}
+
+
+::-webkit-scrollbar{
+    /*width:0px !important;*/
+}
+
+.sel{
+    background: rgba(182, 170, 187, 0.61)!important;
+}
+.inp1{
+    /*width: calc(100% - 2px);*/
+    width: 100% !important;
+    height: 100%;
+    outline: none;
+    border: none;
+    text-align: center;
+    background: transparent;
+}
+
+::-webkit-scrollbar{
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb{
+    border-width:1px 1px 1px 2px;
+    border-color: #777;
+    background-color: #aaa;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    border-width: 1px 1px 1px 2px;
+    border-color: #555;
+    background-color: #777;
+}
+
+::-webkit-scrollbar-track{
+    border-width:0;
+}
+
+::-webkit-scrollbar-track:hover{
+    border-left: solid 1px #aaa;
+    background-color: #eee;
+}
+
